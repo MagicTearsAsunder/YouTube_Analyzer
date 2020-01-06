@@ -1,0 +1,8 @@
+Django
+django-cleanup
+numpy
+scipy
+matplotlib
+pandas
+seaborn
+wordcloud

@@ -1,0 +1,84 @@
+{% extends 'omaewa/base.html' %}
+{% load static %}
+{% block title %}YouTube Stats{% endblock %}
+
+  {% block body %}
+
+  {% if message %}
+    {% for i in message %}
+     <header>
+         <div class="alert alert-primary border text-center" role="alert">
+           {{ i }}
+          </div>
+      </header>
+    {% endfor %}
+  {% endif %}
+
+  {% for field in form %}
+      {% if field.errors %}
+          {% for error in field.errors %}
+              <header>
+              <div class="alert alert-primary border text-center" role="alert">
+                {{error}}
+                </div>
+                </header>
+          {% endfor %}
+      {% endif %}
+  {% endfor %}
+
+  <br>
+  <div class="text-center">
+    <p class="h2">Your Personal Youtube Statistics</p>
+  </div>
+  <br>
+  <br>
+  <div class="card mb-4 wow fadeIn">
+
+    <!--Card content-->
+    <div class="card-body">
+
+      <p class="h5 my-4">Download your data</p>
+      <p>1. You can download your statistics data from <a href="https://takeout.google.com/" target="_blank">Google Takeout</a>.
+        Additional information on <a href="https://support.google.com/accounts/answer/3024190?hl=en" target="_blank">Google Support</a>.</p>
+      <p></p>
+
+      <p>2. Select YouTube</p>
+      <img src="{% static "guide_select.png" %}" alt="Я должен был здесь что-то написать.">
+
+      <p>3. Press «Multiple formats» and choose «JSON».</p>
+      <img src="{% static "guide_json.png" %}" alt="Я должен был здесь что-то написать.">
+      <br>
+      <br>
+      <p class="h5 my-4">Upload your Zip file</p>
+        <form action="/youtube" method="post"  enctype="multipart/form-data">
+          {% csrf_token %}
+
+
+{% for field in form %}
+          <div class="w-50 p-3">
+          <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+    </div>
+    <div class="custom-file">
+          {{ field }}
+            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+          </div>
+        </div>
+          </div>
+{% endfor %}
+
+          <div class="md-form text-center">
+            <button class="btn btn-primary" type="submit">Submit</button>
+              </div>
+        </form>
+
+
+
+
+
+
+
+    </div>
+  </div>
+  {% endblock %}

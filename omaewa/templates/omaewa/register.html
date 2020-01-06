@@ -1,0 +1,38 @@
+{% extends 'omaewa/base.html' %}
+{% block title %}Registration{% endblock %}
+
+  {% block body %}
+      <form action="/register" method="post">
+        {% csrf_token %}
+
+        {% if message %}
+           <header>
+               <div class="alert alert-primary border text-center" role="alert">
+                 {{ message }}
+                </div>
+            </header>
+        {% endif %}
+
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <header>
+                    <div class="alert alert-primary border text-center" role="alert">
+                      {{error}}
+                      </div>
+                      </header>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+        {% for field in form %}
+              <div id="exampleForm2" style="width: 20rem; margin: 10px auto;">
+                {{ field }}
+                </div>
+        {% endfor %}
+
+        <div class="md-form text-center">
+          <button class="btn btn-primary" type="submit">Register</button>
+            </div>
+      </form>
+  {% endblock %}

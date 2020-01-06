@@ -1,0 +1,134 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{% block title %}{% endblock %}</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'favicon.ico' %}" rel="icon">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+</head>
+
+<body class="grey lighten-3">
+
+  <!--Main Navigation-->
+  <header>
+
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+      <div class="container">
+
+        <!-- Brand -->
+        <a class="navbar-brand waves-effect" href="{% url 'index' %}">
+          <strong class="blue-text">Home</strong>
+        </a>
+
+        <!-- Collapse -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <!-- Left -->
+
+          <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'youtube'  %}"><i class="fab fa-youtube"></i>YouTube Stats</a>
+            </li>
+            {% endif %}
+          </ul>
+
+          <!-- Right -->
+          <ul class="navbar-nav nav-flex-icons">
+
+            <li class="nav-item">
+              <a href="https://vk.com/kirill_sosnovskii" class="nav-link waves-effect" target="_blank">
+                <i class="fab fa-vk"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="https://github.com/MagicTearsAsunder" class="nav-link waves-effect" target="_blank">
+              <i class="fab fa-github"></i>
+              </a>
+            </li>
+
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a href="{% url 'user_logout' %}" class="nav-link border border-light rounded waves-effect">
+                Logout
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a href="{% url 'user_login' %}" class="nav-link border border-light rounded waves-effect">
+                Login
+              </a>
+            </li>
+
+            <ul class="navbar-nav mr-auto">
+              {% if not user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link waves-effect" href="{% url 'user_registration' %}">Register</a>
+              </li>
+              {% endif %}
+            </ul>
+            {% endif %}
+
+          </ul>
+
+        </div>
+
+      </div>
+    </nav>
+    <!-- Navbar -->
+
+  </header>
+  <!--Main Navigation-->
+
+  <!--Main layout-->
+  <main class="mt-5 pt-5">
+    <div class="container">
+    {% block body %}{% endblock %}
+    </div>
+    <!-- Material input -->
+  </main>
+
+  </div>
+  <!--Main layout-->
+
+  <!--Footer-->
+
+  <!--/.Footer-->
+
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+  <!-- Initializations -->
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+
+  </script>
+</body>
+
+</html>

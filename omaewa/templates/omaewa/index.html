@@ -1,0 +1,132 @@
+{% extends 'omaewa/base.html' %}
+{% block title %}Main Page{% endblock %}
+
+  {% block body %}
+  <div class="text-center">
+    <p class="h2">Overall YouTube Analysis</p>
+    </div>
+
+  <br>
+  <br>
+
+  <div class="card mb-6 wow fadeIn">
+    <div class="card-body">
+        <p class="h3 my-4">Primary statistics</p>
+        <p><b>Watched:</b> {{ ytts.count_watched }} videos</p>
+        <p><b>Searches:</b> {{ ytts.count_searches }} times</p>
+        <p><b>Liked:</b> {{ ytts.count_liked}} times</p>
+
+        <p><b>This is your first watched Youtube video:</b> <a href="{{ ytts.first_watched_url }}" target="_blank">{{ ytts.first_watched_title }}</a></p>
+
+        <p><b>Your first watched YouTube video was in</b>: {{ ytts.first_watched_dt }} </p>
+        <p><b>Your first search:</b> « {{ ytts.first_search }} »</p>
+        <p><b>The first video you've liked:</b> <a href="{{ ytts.first_liked_url}}" target="_blank">{{ ytts.first_liked}}</a></p>
+      </div>
+    </div>
+
+        <br>
+        <br>
+<div class="text-center">
+    <div class="card mb-6 wow fadeIn">
+      <div class="card-body">
+
+          <p class="h3 my-4">Searches Wordcloud</p>
+            <img src="{{ wrdcld.file.url }}">
+          </div>
+        </div>
+
+            <br>
+            <br>
+
+            <div class="card mb-6 wow fadeIn">
+              <div class="card-body">
+            <p class="h3 my-4">Activity</p>
+                <img src="{{ activs.activity_by_hour.url }}"  height="470" width="1050">
+                <img src="{{ activs.activity_by_weekday.url }}"  height="470" width="1050">
+                <br>
+                <br>
+              </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="card mb-6 wow fadeIn">
+              <div class="card-body">
+            <p class="h3 my-4">Your year activity</p>
+                  {% for heatmap in htmap %}
+                    <img src="{{ heatmap.file.url }}" height="430" width="1050" >
+                  {% endfor %}
+                </div>
+              </div>
+
+              <br>
+              <br>
+
+    <div class="card mb-6 wow fadeIn">
+      <div class="card-body">
+      <p class="h3 my-4">Top 5 Watched</p>
+
+      <table class="table table-striped table-hover table-bordered">
+
+        <thead>
+          <tr>
+            <th style="width:7%;">№</th>
+            <th>Title (clickable)</th>
+            <th style="width:7%;">Watched</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          {% for row in topvids %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td><a href="{{ row.the_url }}" target="_blank">{{ row.title }}</a></td>
+            <td>{{ row.counts }}</td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+
+      </table>
+      <br>
+      <br>
+      <p class="h3 my-4">Top 5 Channels</p>
+
+      <table class="table table-striped table-hover table-bordered">
+
+        <thead>
+          <tr>
+            <th style="width:7%;">№</th>
+            <th>Channel title (clickable)</th>
+            <th style="width:7%;">Watched</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          {% for row in topchs %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td><a href="{{ row.the_url }}" target="_blank">{{ row.title }}</a></td>
+            <td>{{ row.counts }}</td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+
+      </table>
+        </div>
+      </div>
+      <br>
+            <form action="/" method="post">
+              {% csrf_token %}
+
+              <div class="md-form text-center">
+                <button class="btn btn-primary" type="submit">Delete all data</button>
+                  </div>
+              </form>
+            </div>
+  </div>
+  {% endblock %}

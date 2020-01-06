@@ -1,0 +1,20 @@
+# system, cache or compiled files
+__pycache__
+.idea/
+.pytest_cache/
+.cache/
+
+# virtual environment
+venv
+env
+ENV
+
+# ignore media folder
+media
+
+# migration files
+omaewa/migrations/[0-9][0-9][0-9][0-9]*
+
+
+# SQLite3
+db.sqlite3

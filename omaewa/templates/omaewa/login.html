@@ -1,0 +1,25 @@
+{% extends 'omaewa/base.html' %}
+{% block title %}Login{% endblock %}
+
+  {% block body %}
+      <form action="/login" method="post">
+        {% csrf_token %}
+
+        {% if message %}
+           <header>
+               <div class="alert alert-primary border text-center" role="alert">
+                 {{ message }}
+                </div>
+            </header>
+        {% endif %}
+        <br>
+        <div id="exampleForm2" style="width: 20rem; margin: 10px auto;">
+        <input type="text" name="username" autofocus="autofocus" placeholder="Username"  class="form-control" style="margin: 10px auto;">
+        <input type="password" name="password" placeholder="Password" class="form-control">
+        </div>
+
+        <div class="md-form text-center">
+          <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+      </form>
+  {% endblock %}
