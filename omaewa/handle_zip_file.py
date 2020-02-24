@@ -186,8 +186,6 @@ class GenerateStats:
             list_of_years = list(df.Year.drop_duplicates())
             list_of_years.sort()
             sns.set()
-            plt.rcParams['figure.dpi'] = 300
-            plt.rcParams.update({'font.size': 12})
 
             monthes = [
                 'January', 'February', 'March', 'April',
@@ -242,11 +240,7 @@ class GenerateStats:
                 self.files_data['heatmaps'].append(file)
 
         def activity_by_hour(the_frame):
-            the_frame = the_frame.groupby(
-                the_frame.columns.tolist()).size().rename(
-                columns={0: 'Counts'}
-            )
-
+            the_frame = the_frame.groupby(the_frame.columns.tolist()).size()
             sns.set(style="white", context="talk")
 
             f, ax = plt.subplots(1, 1, figsize=(10, 4), sharex=True)
@@ -265,9 +259,7 @@ class GenerateStats:
 
         def activity_by_weekday(the_frame):
             the_frame = the_frame.groupby(
-                the_frame.columns.tolist()).size().rename(
-                columns={0: 'Counts'}
-            )
+                the_frame.columns.tolist()).size()
             weekdays = ['Monday', 'Tuesday', 'Wednesday',
                         'Thursday', 'Friday', 'Saturday', 'Sunday']
             the_frame.index = pd.Categorical(
@@ -299,8 +291,10 @@ class GenerateStats:
             the_frame = the_frame.head()
             return the_frame
 
+        plt.rcParams['figure.dpi'] = 60
+        plt.rcParams.update({'font.size': 12})
+
         the_heatmap(df[['Day', 'Month', 'Year']])
-        plt.rcParams['figure.dpi'] = 100
         activity_by_hour(df[['Hour']])
         activity_by_weekday(df[['Weekday']])
         plt.close('all')

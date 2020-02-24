@@ -1,0 +1,30 @@
+#!/bin/bash
+if [[ ! -f ./shindeiru/.env ]]
+then
+    echo ".env file does not exist in ./shindeiru/"
+    exit 1
+fi
+
+printf "Installing required dependencies...\n"
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get dist-upgrade
+sudo apt-get install --upgrade python3.8
+sudo apt-get install --upgrade python3-dev
+python3.8 -m pip install --upgrade pip
+pip install --upgrade virtualenv
+
+printf "\nCreating virtual environment...\n"
+rm -r ./venv
+virtualenv -p python3.8 ./venv
+source ./venv/bin/activate
+
+printf "\nInstalling requirements...\n"
+./venv/bin/pip install --requirement=./requirements.txt
+
+printf "\nApplying migrations...\n"
+./venv/bin/python manage.py makemigrations
+./venv/bin/python manage.py migrate
+
+printf "\nCreating superuser...\n"
+./venv/bin/python manage.py createsuperuser

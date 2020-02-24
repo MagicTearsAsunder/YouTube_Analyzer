@@ -11,25 +11,33 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
+import omaewa
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Main app 'OMAEWA' absolute path
+OMAEWA_DIR = os.path.dirname(omaewa.__file__)
 
+# Read dot env file
+env = environ.Env()
+environ.Env.read_env()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&q%jw1fh4lj3yh&!9-@e(oielp38pihk5$k&wz33-8vf!_tgn1'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost", "0.0.0.0", "127.0.0.1", env.str('ALLOWED_HOST_4')
+]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'omaewa.apps.OmaewaConfig',
     'django.contrib.admin',
@@ -75,13 +83,24 @@ WSGI_APPLICATION = 'shindeiru.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+# Assumes you are using PostgreSQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env.str('DATABASE_NAME'),
+        'USER': env.str('DATABASE_USER'),
+        'PASSWORD': env.str('DATABASE_PASSWORD'),
+        'HOST': env.str('DATABASE_HOST'),
+        'PORT': env.str('DATABASE_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -121,21 +140,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# SMTP e-mailing settings
-
-# Optional
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-# TODO:
-EMAIL_HOST_USER = ""
-# TODO:
-EMAIL_HOST_PASSWORD = ""
-EMAIL_USE_TLS = True
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# SMTP e-mailing settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = env.int('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_APP_KEY')
+EMAIL_USE_TLS = True
+
 
 CACHES = {
     'default': {

@@ -28,5 +28,8 @@ def delete_all(username):
 
     try:
         shutil.rmtree(os.path.join(settings.MEDIA_ROOT, 'extracted', username))
+        os.remove(
+            os.path.join(settings.MEDIA_ROOT, 'zipfiles', username + '.zip')
+        )
     except FileNotFoundError:
         pass

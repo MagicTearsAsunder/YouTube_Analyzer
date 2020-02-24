@@ -58,7 +58,7 @@ def user_login(request, *args, **kwargs):
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user:
-            if not CustomUser.objects.get(pk=user).is_confirmed:
+            if not user.is_confirmed:
                 message = 'Please, confirm your e-mail.'
             elif user.is_active:
                 login(request, user)
@@ -87,14 +87,9 @@ def youtube(request, *args, **kwargs):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            try:
-                the_user = CustomUser.objects.get(pk=request.user)
-            except CustomUser.DoesNotExist as unexp_error:
-                print(unexp_error)
-                return HttpResponseRedirect(reverse('index'))
-
+            delete_all(request.user.username)
             new_zip = StatsZipFiles.objects.update_or_create(
-                username=the_user,
+                username=request.user,
                 defaults={'file': form.cleaned_data['file']}
             )
 
@@ -110,22 +105,22 @@ def youtube(request, *args, **kwargs):
                 return render(request, 'omaewa/youtube.html', context)
 
             YouTubeTextStats.objects.update_or_create(
-                username=the_user,
+                username=request.user,
                 defaults=yt_dt.text_data
             )
 
             try:
-                htmap = HeatmapFiles.objects.filter(username=the_user)
-            except WordClouds.DoesNotExist:
+                htmap = HeatmapFiles.objects.filter(username=request.user)
+            except HeatmapFiles.DoesNotExist:
                 pass
             else:
                 htmap.delete()
             finally:
                 for i in yt_dt.files_data['heatmaps']:
-                    HeatmapFiles.objects.create(username=the_user, file=i)
+                    HeatmapFiles.objects.create(username=request.user, file=i)
 
             WordClouds.objects.update_or_create(
-                username=the_user,
+                username=request.user,
                 defaults={'file': yt_dt.files_data['wordcloud']}
             )
 
@@ -135,13 +130,13 @@ def youtube(request, *args, **kwargs):
             }
 
             try:
-                activs = Activities.objects.get(username=the_user)
+                activs = Activities.objects.get(username=request.user)
             except Activities.DoesNotExist:
                 pass
             else:
                 activs.delete()
             finally:
-                Activities.objects.create(username=the_user, **defies)
+                Activities.objects.create(username=request.user, **defies)
 
             tops = {
                 TopChannels: yt_dt.frame_channels,
@@ -150,7 +145,7 @@ def youtube(request, *args, **kwargs):
 
             for the_model in tops:
                 try:
-                    top_five = the_model.objects.filter(username=the_user)
+                    top_five = the_model.objects.filter(username=request.user)
                 except top_five.DoesNotExist:
                     pass
                 else:
@@ -158,7 +153,7 @@ def youtube(request, *args, **kwargs):
                 finally:
                     for index, row in tops[the_model].iterrows():
                         the_model.objects.create(
-                            username=the_user,
+                            username=request.user,
                             title=row['title'],
                             the_url=row['the_url'],
                             counts=row['counts']

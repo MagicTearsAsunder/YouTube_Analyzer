@@ -127,6 +127,9 @@ class HeatmapFiles(models.Model):
         blank=False
     )
 
+    class Meta:
+        ordering = ['file']
+
 
 class WordClouds(models.Model):
     def user_directory_path(instance, filename):
@@ -195,6 +198,9 @@ class TopChannels(models.Model):
         blank=False
     )
 
+    class Meta:
+        ordering = ['-counts']
+
 
 class TopVideos(models.Model):
     username = models.ForeignKey(
@@ -218,3 +224,6 @@ class TopVideos(models.Model):
         verbose_name='Counts',
         blank=False
     )
+
+    class Meta:
+        ordering = ['-counts']
