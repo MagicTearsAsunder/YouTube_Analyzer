@@ -85,7 +85,6 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 302)
         self.assertRedirects(response, reverse('index'))
-
         self.assertEquals(self.test_user.youtubetextstats.count_watched, 21481)
         self.assertEquals(self.test_user.youtubetextstats.count_searches, 3734)
         self.assertEquals(self.test_user.youtubetextstats.count_liked, 422)

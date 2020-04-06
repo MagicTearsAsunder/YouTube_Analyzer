@@ -8,8 +8,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 from zipfile import ZipFile, BadZipFile
 from wordcloud import WordCloud
+
 from django.conf import settings
 from django.core.files.images import ImageFile
+
 from .delete_all_user_data import delete_all
 
 

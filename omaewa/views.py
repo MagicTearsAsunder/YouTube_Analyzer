@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpRequest
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
 from .forms import CustomUserForm, UploadFileForm
 from .email_confirmation import send_email_confirmation
 from .handle_zip_file import GenerateStats
@@ -24,7 +25,7 @@ def user_registration(request, *args, **kwargs):
         new_user = data_from_form.save()
         new_user.set_password(new_user.password)
         new_user.save()
-        send_email_confirmation(new_user)
+        send_email_confirmation(new_user, request.get_host())
         message = "Please, check your e-mail."
         data_from_form = CustomUserForm()
 
