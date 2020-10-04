@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  youtube_analyzer:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=1
+      - DEBUG=1
+      - ALLOWED_HOST_4=''
+      - DATABASE_NAME=my_db
+      - DATABASE_USER=analyzer
+      - DATABASE_PASSWORD=pgpassword
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - EMAIL_PORT=587
+      - EMAIL_HOST_APP_KEY=1
+      - EMAIL_HOST_USER=your_user
+      - EMAIL_HOST_PASSWORD=your_password
+    depends_on:
+      - postgres
+    tty: true
+  postgres:
+    image: "postgres:13"
+    environment:
+      - POSTGRES_PASSWORD=pgpassword
+      - POSTGRES_USER=analyzer
+      - POSTGRES_DB=my_db
+      - POSTGRES_HOST_AUTH_METHOD=md5
+    ports:
+      - "5432:5432"
