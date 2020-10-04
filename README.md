@@ -58,6 +58,10 @@ Instructions, how to set Django SMTP described
     python manage.py runserver
     
 
+## Run it in Docker
+    docker-compose up
+
+
 ## Register and upload your zip file
 
 ### 1. Download your YouTube data from https://takeout.google.com/. Deselect all, choose `Youtube`:
